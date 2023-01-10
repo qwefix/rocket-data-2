@@ -31,18 +31,6 @@ export const Login = () => {
   const [isPasswordErrorShown, setIsPasswordErrorShown] = useState(false);
   const [isPasswordShaking, setIsPasswordShaking] = useState(false);
 
-  useEffect(() => {
-    if (!password) {
-      setPasswordError("Введите пароль");
-      return;
-    }
-    if (password.length < 8) {
-      setPasswordError("Пароль не может быть меньше 8 символов");
-      return;
-    }
-    setPasswordError("");
-  }, [password]);
-
   const shakePassword = () => {
     setIsPasswordErrorShown(true);
     setIsPasswordShaking(true);
@@ -54,7 +42,17 @@ export const Login = () => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (emailError) shakeEmail();
-    if (passwordError) shakePassword();
+    if (!password) {
+      shakePassword();
+      setPasswordError("Введите пароль fix");
+      return;
+    }
+    if (password.length < 8) {
+      shakePassword();
+      setPasswordError("Пароль не может быть меньше 8 символов");
+      return;
+    }
+    setPasswordError("");
     if (passwordError || emailError) return;
     setIsSubmitting(true);
     setTimeout(() => {
