@@ -8,16 +8,18 @@ export const Login = () => {
   const [isEmailErrorShown, setIsEmailErrorShown] = useState(false);
   const [isEmailShaking, setIsEmailShaking] = useState(false);
 
-  useEffect(() => {
+  const renderEmailError = (email: string) => {
     if (!email) {
-      setEmailError("Введите адрес email");
-      return;
+      return "Введите адрес email";
     }
     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      setEmailError("Укажите корректный адрес email");
-      return;
+      return "Укажите корректный адрес email";
     }
-    setEmailError("");
+    return "";
+  };
+
+  useEffect(() => {
+    setEmailError(renderEmailError(email));
   }, [email]);
 
   const shakeEmail = () => {
@@ -31,6 +33,20 @@ export const Login = () => {
   const [isPasswordErrorShown, setIsPasswordErrorShown] = useState(false);
   const [isPasswordShaking, setIsPasswordShaking] = useState(false);
 
+  const renderPasswordError = (password: string) => {
+    if (!password) {
+      return "Введите пароль";
+    }
+    if (password.length < 8) {
+      return "Пароль не может быть меньше 8 символов";
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    setPasswordError(renderPasswordError(password));
+  }, [password]);
+
   const shakePassword = () => {
     setIsPasswordErrorShown(true);
     setIsPasswordShaking(true);
@@ -41,23 +57,18 @@ export const Login = () => {
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+
+    const emailError = renderEmailError(email);
+    const passwordError = renderPasswordError(password);
+
     if (emailError) shakeEmail();
-    if (!password) {
-      shakePassword();
-      setPasswordError("Введите пароль fix");
-      return;
-    }
-    if (password.length < 8) {
-      shakePassword();
-      setPasswordError("Пароль не может быть меньше 8 символов");
-      return;
-    }
-    setPasswordError("");
+    if (passwordError) shakePassword();
     if (passwordError || emailError) return;
+
     setIsSubmitting(true);
     setTimeout(() => {
-        setIsSubmitting(false)
-        window.location.reload()
+      setIsSubmitting(false);
+      window.location.reload();
     }, 2000);
   };
 
@@ -84,15 +95,13 @@ export const Login = () => {
             </label>
             <input
               disabled={isSubmitting}
-              className={emailError && c.error}
+              className={emailError && isEmailErrorShown ? c.error : ""}
               name="email"
               id="email"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => {
-                setIsEmailErrorShown(true);
-              }}
+              onBlur={() => setIsEmailErrorShown(true)}
             />
             <p className={c.hint}>{isEmailErrorShown && emailError}</p>
           </div>
@@ -107,16 +116,14 @@ export const Login = () => {
             </label>
             <input
               disabled={isSubmitting}
-              className={passwordError && c.error}
+              className={passwordError && isPasswordErrorShown ? c.error : ""}
               name="password"
               id="password"
               type="password"
               autoComplete="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => {
-                setIsPasswordErrorShown(true);
-              }}
+              onBlur={() => setIsPasswordErrorShown(true)}
             />
             <p className={c.hint}>{isPasswordErrorShown && passwordError}</p>
           </div>
