@@ -1,0 +1,127 @@
+.wrapper {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .login_box {
+    position: relative;
+    height: 800px;
+    width: 600px;
+    max-height: 100%;
+    max-width: 100%;
+    box-shadow: 0px 0px 35px 2px gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .loading{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(gray, .3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header {
+      font-size: 40px;
+      font-weight: 500;
+      margin: 0;
+      margin-top: 30px;
+    }
+    .subheader {
+      font-size: 20px;
+    }
+    form {
+      width: 100%;
+      padding: 2em;
+      .input_container {
+        display: flex;
+        flex-direction: column;
+
+        &.shaking {
+          animation: shake .5s infinite;
+          input{
+            outline: 1px solid red;
+          }
+        }
+
+        label {
+          span {
+            color: red;
+          }
+        }
+        input {
+          width: 100%;
+          padding: 0.7em;
+          font-size: 1em;
+          &:focus {
+            outline-color: blue;
+            &.error {
+              outline-color: red;
+            }
+          }
+        }
+        .hint {
+          margin: 0.1em 0;
+          height: 1em;
+          font-size: 0.8em;
+          color: red;
+        }
+      }
+      .input_container + .input_container {
+        margin-top: 1em;
+      }
+    }
+    button[type=submit]{
+        margin-top: 50px;
+        border: none;
+        border-radius: 0;
+        background-color: blue;
+        color:white;
+        padding: 8px;
+        font-size: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translate(2px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-2deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(3deg);
+  }
+  30% {
+    transform: translate(0px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(2px, 1px) rotate(-2deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(4deg);
+  }
+  90% {
+    transform: translate(2px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
